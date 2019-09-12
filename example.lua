@@ -12,6 +12,7 @@ if (curStatus == newStatus) then return 1 end
 -- If key doesn't exist yet in redis 
 -- OR newStatus is something other than pending, update
 if (curStatus == false or not (newStatus == 'pending')) then
+  print('Calling hmset')
   redis.call('hmset', KEYS[1], unpack(ARGV))
 end
 
