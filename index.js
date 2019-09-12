@@ -1,9 +1,6 @@
 const redis = require('redis')
 const client = redis.createClient('redis://localhost:6379/1')
 const fs = require('fs')
-const { promisify } = require('util')
-
-const evalAsync = promisify(client.eval).bind(client)
 
 const luaScript = fs.readFileSync('./example.lua')
 
