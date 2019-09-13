@@ -2,6 +2,8 @@
 -- ARGV is an array of params that came after the redis keys 
 -- In Lua, first item in array is at index 1, not 0
 
+local TX_EXPIRE_TIME = 60 * 60
+
 -- Get the current status in redis and new status in call
 local curStatus = redis.call('hget', KEYS[1], 'status')
 local newStatus = ARGV[2]
@@ -12,8 +14,8 @@ if (curStatus == newStatus) then return 1 end
 -- If key doesn't exist yet in redis 
 -- OR newStatus is something other than pending, update
 if (curStatus == false or not (newStatus == 'pending')) then
-  print('Calling hmset')
   redis.call('hmset', KEYS[1], unpack(ARGV))
+  redis.call('expire', KEYS[1], TX_EXPIRE_TIME)
 end
 
 return 1
