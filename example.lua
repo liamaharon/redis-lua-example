@@ -13,7 +13,6 @@ local shouldSet = unseenHash or (differentStatus and not (newStatus == 'pending'
 
 local hmsetRes
 if (shouldSet) then
-  print('setting')
   hmsetRes = redis.call('hmset', KEYS[1], unpack(ARGV))
   if (hmsetRes['err']) then return redis.error_reply(hmsetRes['err']) end
 end
